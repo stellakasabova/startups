@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registration</title>
+</head>
+<body>
+    <form action="{{ url_for('register') }}" method="POST">
+        <p>Enter Username:</p>
+        <p><label>
+            <input type="text" name="username" />
+        </label></p>
+        <p>Enter Password:</p>
+        <p><label>
+            <input type="password" name="password" />
+        </label></p>
+        <p>Enter Name:</p>
+        <p><label>
+            <input type="text" name="name" />
+        </label></p>
+        <p>Enter Age:</p>
+        <p><label>
+            <input type="text" name="age" />
+        </label></p>
+        <p>Enter Education:</p>
+        <p><label>
+            <input type="text" name="education" />
+        </label></p>
+        <p>Enter Position:</p>
+        <p><label>
+            <input type="text" name="position" />
+        </label></p>
+        <p>Enter About Info:</p>
+        <p><label>
+            <input type="text" name="about" />
+        </label></p>
+
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+</body>
+</html>
