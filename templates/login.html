@@ -4,7 +4,7 @@
         box-sizing: border-box;
     }
     body{
-        background-color: #e5d693;
+        background-color: #f0e4b4;
         font-family: 'Roboto';
         font-weight: lighter;
     }
@@ -22,6 +22,10 @@
     }
     .bttn:hover{
         background: #eccf4e;
+    }
+    .register{
+        margin-left: 133.5px;
+        color: #d3b11a;
     }
     .login{
         background: #eff0e2;
@@ -61,6 +65,8 @@
             <div class="stack_panel">
                 <input class="bttn" type="submit" value="Login"/>
             </div>
+
+            <a href="{{ url_for('register') }}" class="register">Don't have an account? Register now!</a>
         </form>
     </body>
 </html>
