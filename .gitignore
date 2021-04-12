@@ -1,0 +1,7 @@
+
+auth/
+.idea/
+venv/
+Pipfile
+Pipfile.lock
+pyvenv.cfg
