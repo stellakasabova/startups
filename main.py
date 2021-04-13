@@ -1,18 +1,18 @@
-<<<<<<< Updated upstream
-from flask import Flask, redirect, render_template, request, session
-from flask_sqlalchemy import SQLAlchemy
-=======
 import os
 import logging
 from flask import Flask, redirect, render_template, request, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
->>>>>>> Stashed changes
 
 app = Flask(__name__)
 app.secret_key = 'very secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'logs.log')
+logging.basicConfig(filename=filename, level=logging.DEBUG,
+                    format='%(asctime)s | %(levelname)s | %(message)s')
+logger = logging.getLogger(__name__)
 
 db = SQLAlchemy(app)
 
@@ -31,12 +31,14 @@ class Users(db.Model):
 @app.route('/')
 @app.route('/homepage')
 def homepage():
+    app.logger.info('Loading homepage')
     return render_template('homepage.html')
 
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'GET':
+        app.logger.info('Loading registration form')
         return render_template('register.html')
 
     if request.method == 'POST':
@@ -55,8 +57,10 @@ def register():
         try:
             db.session.add(new_user)
             db.session.commit()
+            app.logger.info('Registration successful')
             return redirect('/homepage')  # will redirect it to a different page at a later date
         except:
+            app.logger.info('Registration failed')
             return "<h1>Something went wrong while registering</h1>"
 
 
@@ -69,27 +73,22 @@ def login():
         user = Users.query.filter_by(username=username).first()
 
         if not user:
-<<<<<<< Updated upstream
-            return "<h1>Wrong username or password</h1>"
-        else:
-            session['user'] = username
-            return redirect('/homepage')  # will redirect it to a different page at a later date
-=======
             app.logger.info('Login failed')
             return flash('Wrong username or password')
 
         if check_password_hash(user.password, password):
-            session['user'] = user.id
+            session['user'] = username
             app.logger.info('Login successful')
-            return redirect('/homepage')
->>>>>>> Stashed changes
+            return redirect('/homepage')  # will redirect it to a different page at a later date
 
     if request.method == 'GET':
+        app.logger.info('Loading login page')
         return render_template('login.html')
 
 
-@app.route('/logout')
+@app.route('/logout')  # currently not used since we only have a single page
 def logout():
+    app.logger.info('User logged out')
     session.pop('user')
     return redirect('/login')
 
