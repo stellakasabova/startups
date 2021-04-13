@@ -1,14 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Homepage</title>
-</head>
-<body>
-    <form method="get" action="{{ url_for('login') }}">
-    <button type="submit">Log In</button>
-    </form>
-    <form method="get" action="{{ url_for('register') }}">
-    <button type="submit">Register</button>
-    </form>
-</body>
+<style>
+    *{
+        font-weight: lighter;
+        font-family: 'Roboto';
+    }
+    body{
+        background-color: #f0e4b4;
+    }
+    h1{
+        color: black;
+        text-align: center;
+        font-size: 500%;
+    }
+    ul{
+        background-color: #f3db71;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        overflow: hidden;
+    } 
+    li{
+        float: left;
+    }
+    li a{
+        color: #636363;
+        display: block;
+        padding: 16px 10px;
+        text-decoration: none;
+    }
+    li a:hover {
+        background-color: #eccf4e;
+    }
+    button{
+        background: #f3db71;
+        color: #636363;
+        width: 25%;
+        font-size: 1rem;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+        margin-left: 560px;
+    }
+    button:hover{
+        background: #eccf4e;
+    }
+    .bttn_right{
+        float: right;
+        margin-right: 10px;
+    }
+</style>
+
+<html>
+    <body>
+        <form action="{{ url_for('homepage') }}" method="get">
+            <ul>
+                <li><a href="{{ url_for('homepage') }}">Home</a></li>
+                <li class="bttn_right"><a href="{{ url_for('register') }}">Register</a></li>
+                <li class="bttn_right"><a href="{{ url_for('login') }}">Log in</a></li>
+            </ul>
+        </form>
+
+        <h1>Startups: Homepage!</h1>
+    </body>
 </html>
