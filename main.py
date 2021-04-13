@@ -4,6 +4,7 @@ from flask import Flask, redirect, render_template, request, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 app = Flask(__name__)
 app.secret_key = 'very secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
