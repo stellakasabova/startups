@@ -1,5 +1,13 @@
+<<<<<<< Updated upstream
 from flask import Flask, redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
+=======
+import os
+import logging
+from flask import Flask, redirect, render_template, request, session, flash
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+>>>>>>> Stashed changes
 
 app = Flask(__name__)
 app.secret_key = 'very secret key'
@@ -34,13 +42,14 @@ def register():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+        hashed_password = generate_password_hash(password, method='sha256')
         name = request.form.get('name')
         age = request.form.get('age')
         education = request.form.get('education')
         position = request.form.get('position')
         about = request.form.get('about')
 
-        new_user = Users(username=username, password=password, name=name, age=age, education=education,
+        new_user = Users(username=username, password=hashed_password, name=name, age=age, education=education,
                          position=position, about=about)
 
         try:
@@ -57,13 +66,23 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        user = Users.query.filter_by(username=username, password=password).first()
+        user = Users.query.filter_by(username=username).first()
 
         if not user:
+<<<<<<< Updated upstream
             return "<h1>Wrong username or password</h1>"
         else:
             session['user'] = username
             return redirect('/homepage')  # will redirect it to a different page at a later date
+=======
+            app.logger.info('Login failed')
+            return flash('Wrong username or password')
+
+        if check_password_hash(user.password, password):
+            session['user'] = user.id
+            app.logger.info('Login successful')
+            return redirect('/homepage')
+>>>>>>> Stashed changes
 
     if request.method == 'GET':
         return render_template('login.html')
