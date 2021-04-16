@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask, redirect, render_template, request, session, flash
+from flask import Flask, redirect, render_template, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -75,12 +75,12 @@ def login():
 
         if not user:
             app.logger.info('Login failed')
-            return flash('Wrong username or password')
+            return render_template('login.html')
 
         if check_password_hash(user.password, password):
             session['user'] = username
             app.logger.info('Login successful')
-            return redirect('/homepage')  # will redirect it to a different page at a later date
+            return redirect(url_for('profile', user_id=user.id))
 
     if request.method == 'GET':
         app.logger.info('Loading login page')
@@ -92,6 +92,45 @@ def logout():
     app.logger.info('User logged out')
     session.pop('user')
     return redirect('/login')
+
+
+@app.route('/profile/<user_id>', methods=['GET', 'POST'])
+def profile(user_id):
+    if request.method == 'GET':
+        if 'user' in session:
+            user = Users.query.filter_by(id=user_id).first_or_404()
+
+            return render_template('profile.html', user=user)
+        else:
+            return render_template('login.html')
+    if request.method == 'POST':
+        return redirect(url_for('profile_editing', user_id))
+
+@app.route('/profile_edit/<user_id>', methods=['GET', 'POST'])
+def profile_edit(user_id):
+    if request.method == 'GET':
+        if 'user' in session:
+            user = Users.query.filter_by(id=user_id).first_or_404()
+
+            return render_template('profile_editing.html', user=user)
+        else:
+            return render_template('login.html')
+    if request.method == 'POST':
+        user = Users.query.filter_by(id=user_id).first_or_404()
+
+        user.name = request.form.get('name')
+        user.age = request.form.get('age')
+        user.education = request.form.get('education')
+        user.position = request.form.get('position')
+        user.about = request.form.get('about')
+
+        try:
+            db.session.commit()
+            app.logger.info('Successfully changed user information')
+            return redirect(url_for('profile', user_id))
+        except:
+            app.logger.info('Editing failed')
+            return "<h1>Something went wrong while editing</h1>"
 
 
 if __name__ == "__main__":
