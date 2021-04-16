@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<style>
+    *{
+        box-sizing: border-box;
+        font-family: 'Roboto';
+        font-weight: lighter;
+    }
+    body{
+        background-color: #f0e4b4;
+    }
+    h1{
+        color: black;
+        text-align: center;
+        margin-top: 70px;
+        margin-bottom: -70px;
+    }
+    label{
+        text-align: center;
+        margin-bottom : 1.5rem;
+    }
+    p{
+        background: #f7f8f0;
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e0e0e0;
+    }
+    .bttn{
+        background: #f3db71;
+        color: black;
+        width: 100%;
+        font-size: 1rem;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+    }
+    .bttn:hover{
+        background: #eccf4e;
+    }
+    .profile{
+        background: #eff0e2;
+        width: 550px;
+        margin-top: 150px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 2rem;
+        border: 1px solid #e0e0e0;
+    }
+    .stack_panel{
+        margin-bottom: 2rem;
+    }
+</style>
+
+<html>
+    <body>
+        <h1>User information</h1>
+
+        <form class="profile" action="{{ url_for('profile_edit', user_id=user.id) }}">
+            <div class="stack_panel">
+                <label>Name: </label>
+                <p aria-readonly="false">{{ user.name }}</p>
+                <input name="name" type="text" class="input_field">
+            </div>
+
+            <div class="stack_panel">
+                <label>Age: </label>
+                <p aria-readonly="false">{{ user.age }}</p>
+                <input name="age" type="text" class="input_field">
+            </div>
+
+            <div class="stack_panel">
+                <label>Education: </label>
+                <p aria-readonly="false">{{ user.education }}</p>
+                <input name="education" type="text" class="input_field">
+            </div>
+
+            <div class="stack_panel">
+                <label>Position: </label>
+                <p aria-readonly="false">{{ user.position }}</p>
+                <input name="position" type="text" class="input_field">
+            </div>
+
+            <div class="stack_panel">
+                <label>About: </label>
+                <p aria-readonly="false">{{ user.about }}</p>
+                <input name="about" type="text" class="input_field">
+            </div>
+
+            <input class="bttn" type="submit" value="Save"/>
+        </form>
+    </body>
+</html>
