@@ -29,6 +29,8 @@
         color: black;
         width: 100%;
         font-size: 1rem;
+        margin-left: 200px;
+        text-decoration: none;
         padding: 15px;
         border: 1px solid #e0e0e0;
     }
@@ -79,7 +81,7 @@
                 <p>{{ user.about }}</p>
             </div>
 
-            <a href="{{ url_for('profile_edit', user_id=user.id) }}">AAAAAA</a>
+            <a class="bttn" href="{{ url_for('profile_edit', user_id=user.id) }}">Edit</a>
         </form>
     </body>
 </html>
