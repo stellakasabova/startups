@@ -185,7 +185,27 @@ def create_post(user_id):
             return "<h1>Something went wrong while uploading your post</h1>"
 
 
+@app.route('/delete_post/<post_id>', methods=['GET', 'POST'])
+def delete_post(post_id):
+    post = db.session.query(database.Post).filter_by(id=post_id).first_or_404()
+    post_owner = database.Users.query.filter_by(id=post.author_id).first_or_404()
 
+    if session['user'] != post_owner.username:
+        app.logger.info('Unauthorized user tried deleting post with id <post_id>')
+        return redirect(url_for('view_post', post_id=post_id))
+    else:
+        if session.method == 'GET':
+            app.logger.info('Loading post deletion page')
+            return render_template('delete_post.html')
+        if session.method == 'POST':
+            try:
+                db.session.delete(post)
+                db.session.commit()
+                app.logger.info('Post deleted successfully')
+                return redirect(url_for('profile', user_id=post_owner.id))
+            except:
+                app.logger.info('Post deletion failed')
+                return redirect(url_for('view_post', post_id=post_id))
 
 
 if __name__ == "__main__":
