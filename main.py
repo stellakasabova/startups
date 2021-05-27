@@ -128,12 +128,32 @@ def profile_edit(user_id):
 
 
 # posts
+def search(keyword):
+    search_tag = "%{}%".format(keyword)
+    results = database.Post.query.filter(database.Post.title.ilike(search_tag)).all()
+    return results
+
+@app.route('/post', methods=['GET', 'POST'])
+def post():
+    if request.method == 'GET':
+        posts = database.Post.query.all()
+
+        app.logger.info('Loading posts')
+        return render_template('post.html', posts=posts)
+    if request.method == 'POST':
+        results = search(request.form.get('keyword'))
+
+        app.logger.info('Loading posts from search')
+        return render_template('post.html', posts=results)
+
+
+
 @app.route('/view_post/<post_id>', methods=['GET'])
 def view_post(post_id):
     post = database.Post.query.filter_by(id=post_id).first_or_404()
 
     app.logger.info('Loading post <post_id>')
-    return render_template('post.html', post=post)
+    return render_template('view_post.html', post=post)
 
 
 @app.route('/create_post/<user_id>', methods=['GET', 'POST'])
@@ -159,10 +179,14 @@ def create_post(user_id):
             db.session.add(new_post)
             db.session.commit()
             app.logger.info('Post created successfully')
-            return redirect('/homepage')  # will redirect it to a different page at a later date
+            return redirect('/post')
         except:
             app.logger.info('Post creation failed')
             return "<h1>Something went wrong while uploading your post</h1>"
+
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
