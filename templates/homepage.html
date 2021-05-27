@@ -23,25 +23,13 @@
         float: left;
     }
     li a{
-        color: #636363;
+        color: black;
         display: block;
         padding: 16px 10px;
         text-decoration: none;
     }
     li a:hover {
         background-color: #eccf4e;
-    }
-    button{
-        background: #f3db71;
-        color: #636363;
-        width: 25%;
-        font-size: 1rem;
-        padding: 15px;
-        border: 1px solid #e0e0e0;
-        margin-left: 560px;
-    }
-    button:hover{
-        background: #eccf4e;
     }
     .bttn_right{
         float: right;
@@ -56,6 +44,7 @@
                 <li><a href="{{ url_for('homepage') }}">Home</a></li>
                 <li class="bttn_right"><a href="{{ url_for('register') }}">Register</a></li>
                 <li class="bttn_right"><a href="{{ url_for('login') }}">Log in</a></li>
+                <li class="bttn_right"><a href="{{ url_for('post') }}">Posts</a></li>
             </ul>
         </form>
 
