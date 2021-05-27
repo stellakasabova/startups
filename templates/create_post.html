@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<style>
+    *{
+        box-sizing: border-box;
+    }
+    body{
+        background-color: #f0e4b4;
+        font-family: 'Roboto';
+        font-weight: lighter;
+    }
+    h3{
+        text-align: center;
+        margin-bottom : 2rem;
+    }
+    .bttn{
+        background: #f3db71;
+        color: black;
+        width: 100%;
+        font-size: 1rem;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+    }
+    .bttn:hover{
+        background: #eccf4e;
+    }
+    .create{
+        background: #eff0e2;
+        width: 550px;
+        margin-top: 36px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 1.5rem;
+        border: 1px solid #e0e0e0;
+    }
+    .input_field{
+        background: #f7f8f0;
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e0e0e0;
+    }
+    .stack_panel{
+        margin-bottom: 1.5rem;
+    }
+</style>
+
+<html>
+    <body>
+        <form class="create" action="{{ url_for('create_post', user_id=user.id) }}" method="post">
+            <h3>Please fill in your information:</h3>
+            </br>
+            
+            <div class="stack_panel">
+                <label>Title: </label>
+                <input name="title" type="text" class="input_field" placeholder="Make an eye-catching headline!">
+            </div>
+            
+            <div class="stack_panel">
+                <label>Content: </label>
+                <input name="content" type="text" class="input_field" placeholder="Tell us more about what you have to offer.">
+            </div>
+    
+            <div class="stack_panel">
+                <input class="bttn" type="submit" value="Create"/>
+            </div>
+        </form>
+    </body>
+</html>
