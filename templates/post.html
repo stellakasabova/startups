@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <style>
     *{
         box-sizing: border-box;
@@ -25,6 +28,27 @@
         padding: 12px;
         border: 1px solid #e0e0e0;
     }
+    input {
+        all: unset;
+        font: 16px system-ui;
+        color: black;
+        height: 100%;
+        width: 100%;
+        padding: 6px 10px;
+    }
+    a{
+        background: #f3db71;
+        color: black;
+        width: 75px;
+        font-size: 1rem;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+        text-decoration: none;
+        float: right;
+    }
+    a:hover{
+        background: #eccf4e;
+    }
     .bttn{
         background: #f3db71;
         color: black;
@@ -34,6 +58,18 @@
         border: 1px solid #e0e0e0;
     }
     .bttn:hover{
+        background: #eccf4e;
+    }
+    .bttn_arrow{
+        background: #f3db71;
+        color: black;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+    }
+    .bttn_arrow:hover{
         background: #eccf4e;
     }
     .post{
@@ -48,17 +84,40 @@
     .stack_panel{
         margin-bottom: 2rem;
     }
+    .search_box {
+        background-color: #f7f8f0;
+        color: black;
+        width: 800px;
+        height: 40px;
+        border-radius: 5px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
 </style>
 
 <html>
     <body>
         <h1>Posts</h1>
 
+        <form id="form" role="search" class="search_box">
+            <input type="search" id="query" name="keyword" placeholder="Search..." aria-label="Search through site content">
+            <button class="bttn">Search</button>
+        </form>
+
         <form class="post" action="{{ url_for('post') }}">
             {% for post in posts %}
                 <div class="stack_panel">
                     <h2>{{ post.title }}</h2>
                     <p>{{ post.content }}</p>
+                    <button class="bttn_arrow"><i class="fa fa-arrow-up"></i></button>
+                    <button class="bttn_arrow"><i class="fa fa-arrow-down"></i></button>
+
+                    <a href="{{ url_for('delete_post', post_id=post.id) }}">Delete</a>
+                    <a href="{{ url_for('edit_post', post_id=post.id) }}">Edit</a>
                 </div>
             {% endfor %}
         </form>
