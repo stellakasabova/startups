@@ -18,3 +18,6 @@ class Post(db.Model):
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.String(2000), nullable=False)
     rating = db.Column(db.Integer, nullable=False, default=0)
+
+
+db.create_all()
