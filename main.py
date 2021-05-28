@@ -51,10 +51,10 @@ def register():
             db.session.add(new_user)
             db.session.commit()
             app.logger.info('Registration successful')
-            return redirect('/homepage')  # will redirect it to a different page at a later date
+            return redirect('/homepage')
         except:
             app.logger.info('Registration failed')
-            return "<h1>Something went wrong while registering</h1>"
+            return redirect(url_for('register'))
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -133,6 +133,7 @@ def search(keyword):
     results = database.Post.query.filter(database.Post.title.ilike(search_tag)).all()
     return results
 
+
 @app.route('/post', methods=['GET', 'POST'])
 def post():
     if request.method == 'GET':
@@ -145,7 +146,6 @@ def post():
 
         app.logger.info('Loading posts from search')
         return render_template('post.html', posts=results)
-
 
 
 @app.route('/view_post/<post_id>', methods=['GET'])
@@ -179,33 +179,56 @@ def create_post(user_id):
             db.session.add(new_post)
             db.session.commit()
             app.logger.info('Post created successfully')
-            return redirect('/post')
+            return redirect(url_for('post'))
         except:
             app.logger.info('Post creation failed')
-            return "<h1>Something went wrong while uploading your post</h1>"
+            return redirect(url_for('post'))
 
 
-@app.route('/delete_post/<post_id>', methods=['GET', 'POST'])
+@app.route('/delete_post/<post_id>', methods=['GET'])
 def delete_post(post_id):
     post = db.session.query(database.Post).filter_by(id=post_id).first_or_404()
     post_owner = database.Users.query.filter_by(id=post.author_id).first_or_404()
 
     if session['user'] != post_owner.username:
         app.logger.info('Unauthorized user tried deleting post with id <post_id>')
-        return redirect(url_for('view_post', post_id=post_id))
+        return redirect(url_for('post'))
     else:
-        if session.method == 'GET':
-            app.logger.info('Loading post deletion page')
-            return render_template('delete_post.html')
-        if session.method == 'POST':
+        if request.method == 'GET':
             try:
                 db.session.delete(post)
                 db.session.commit()
                 app.logger.info('Post deleted successfully')
-                return redirect(url_for('profile', user_id=post_owner.id))
+                return redirect(url_for('post'))
             except:
                 app.logger.info('Post deletion failed')
-                return redirect(url_for('view_post', post_id=post_id))
+                return redirect(url_for('post'))
+
+
+@app.route('/edit_post/<post_id>', methods=['GET', 'POST'])
+def edit_post(post_id):
+    post = db.session.query(database.Post).filter_by(id=post_id).first_or_404()
+    post_owner = database.Users.query.filter_by(id=post.author_id).first_or_404()
+
+    if session['user'] != post_owner.username:
+        app.logger.info('Unauthorized user tried deleting post with id <post_id>')
+        return redirect(url_for('post'))
+    else:
+        if request.method == 'GET':
+            app.logger.info('Loading post editing page')
+            return render_template('edit_post.html', post=post)
+
+        if request.method == 'POST':
+            post.title = request.form.get('title')
+            post.content = request.form.get('content')
+
+            try:
+                db.session.commit()
+                app.logger.info('Successfully changed post information')
+                return redirect(url_for('post'))
+            except:
+                app.logger.info('Editing failed')
+                return redirect(url_for('post'))
 
 
 if __name__ == "__main__":
